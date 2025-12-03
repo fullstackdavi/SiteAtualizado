@@ -1,4 +1,4 @@
-import { useEffect, useRef, useMemo, memo, useState } from "react";
+import { useEffect, useRef, useMemo, memo, useState, useCallback } from "react";
 import { gsap } from "gsap";
 import { useReducedMotion, useIsMobile } from "@/hooks/use-reduced-motion";
 
@@ -16,7 +16,7 @@ const throttle = <T extends (...args: unknown[]) => void>(fn: T, delay: number):
   }) as T;
 };
 
-const BokehParticles = memo(function BokehParticles() {
+const BokehParticles = memo(function BokehParticles({ videoPlaying }: { videoPlaying?: boolean }) {
   const bokehRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   const prefersReducedMotion = useReducedMotion();
@@ -26,8 +26,8 @@ const BokehParticles = memo(function BokehParticles() {
     Array.from({ length: count }, (_, i) => ({
       left: `${10 + Math.random() * 80}%`,
       top: `${10 + Math.random() * 80}%`,
-      size: isMobile ? 60 + Math.random() * 80 : 80 + Math.random() * 200,
-      opacity: isMobile ? 0.04 + Math.random() * 0.06 : 0.08 + Math.random() * 0.12,
+      size: isMobile ? 50 + Math.random() * 60 : 80 + Math.random() * 200,
+      opacity: isMobile ? 0.03 + Math.random() * 0.04 : 0.08 + Math.random() * 0.12,
       hue: 35 + Math.random() * 15,
       delay: i * 0.5
     })), [count, isMobile]
@@ -58,6 +58,8 @@ const BokehParticles = memo(function BokehParticles() {
     return () => tweens.forEach(t => t.kill());
   }, [isMobile, prefersReducedMotion]);
 
+  if (isMobile && videoPlaying) return null;
+
   return (
     <div ref={bokehRef} className="absolute inset-0 pointer-events-none overflow-hidden z-[2]">
       {bokehStyles.map((style, i) => (
@@ -75,7 +77,7 @@ const BokehParticles = memo(function BokehParticles() {
               rgba(255, ${140 + style.hue}, 0, ${style.opacity * 0.5}) 60%,
               transparent 100%
             )`,
-            filter: isMobile ? 'blur(25px)' : 'blur(40px)',
+            filter: isMobile ? 'blur(20px)' : 'blur(40px)',
             mixBlendMode: 'screen'
           }}
         />
@@ -84,7 +86,7 @@ const BokehParticles = memo(function BokehParticles() {
   );
 });
 
-const GlowOrbs = memo(function GlowOrbs() {
+const GlowOrbs = memo(function GlowOrbs({ videoPlaying }: { videoPlaying?: boolean }) {
   const orbsRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   const prefersReducedMotion = useReducedMotion();
@@ -113,7 +115,9 @@ const GlowOrbs = memo(function GlowOrbs() {
     return () => tweens.forEach(t => t.kill());
   }, [isMobile, prefersReducedMotion]);
 
-  const orbSize = isMobile ? 0.5 : 1;
+  if (isMobile && videoPlaying) return null;
+
+  const orbSize = isMobile ? 0.4 : 1;
 
   return (
     <div ref={orbsRef} className="absolute inset-0 pointer-events-none overflow-hidden z-[1]">
@@ -153,7 +157,7 @@ const GlowOrbs = memo(function GlowOrbs() {
   );
 });
 
-const MobileBackground = memo(function MobileBackground() {
+const MobileGradientFallback = memo(function MobileGradientFallback() {
   return (
     <div className="absolute inset-0">
       <div 
@@ -201,61 +205,88 @@ export function GlobalBackground() {
   const isMobile = useIsMobile();
   const prefersReducedMotion = useReducedMotion();
   const [videoLoaded, setVideoLoaded] = useState(false);
-  const [videoFailed, setVideoFailed] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
+  const [showFallback, setShowFallback] = useState(true);
 
-  useEffect(() => {
-    if (isMobile) {
-      setVideoFailed(true);
-      return;
-    }
-
-    if (videoRef.current) {
-      videoRef.current.playbackRate = 0.6;
-      
-      const handleCanPlay = () => {
-        setVideoLoaded(true);
-        videoRef.current?.play().catch(() => {
-          setVideoFailed(true);
+  const attemptPlay = useCallback(() => {
+    if (!videoRef.current) return;
+    
+    const playPromise = videoRef.current.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          setVideoPlaying(true);
+          setTimeout(() => setShowFallback(false), 500);
+        })
+        .catch(() => {
+          setShowFallback(true);
+          setVideoPlaying(false);
         });
-      };
-      
-      const handleError = () => {
-        setVideoFailed(true);
-      };
-
-      const handleStalled = () => {
-        setTimeout(() => {
-          if (!videoLoaded) {
-            setVideoFailed(true);
-          }
-        }, 3000);
-      };
-
-      videoRef.current.addEventListener('canplay', handleCanPlay);
-      videoRef.current.addEventListener('error', handleError);
-      videoRef.current.addEventListener('stalled', handleStalled);
-      
-      if (videoRef.current.readyState >= 3) {
-        setVideoLoaded(true);
-      }
-
-      const timeout = setTimeout(() => {
-        if (!videoLoaded) {
-          setVideoFailed(true);
-        }
-      }, 5000);
-      
-      return () => {
-        clearTimeout(timeout);
-        videoRef.current?.removeEventListener('canplay', handleCanPlay);
-        videoRef.current?.removeEventListener('error', handleError);
-        videoRef.current?.removeEventListener('stalled', handleStalled);
-      };
     }
-  }, [isMobile, videoLoaded]);
+  }, []);
 
   useEffect(() => {
-    if (prefersReducedMotion || isMobile) return;
+    if (!videoRef.current || prefersReducedMotion) return;
+
+    const video = videoRef.current;
+    video.playbackRate = isMobile ? 0.8 : 0.6;
+    
+    const handleCanPlay = () => {
+      setVideoLoaded(true);
+      requestAnimationFrame(() => {
+        attemptPlay();
+      });
+    };
+    
+    const handlePlaying = () => {
+      setVideoPlaying(true);
+      setTimeout(() => setShowFallback(false), 300);
+    };
+
+    const handleError = () => {
+      setShowFallback(true);
+      setVideoPlaying(false);
+    };
+
+    const handleWaiting = () => {
+      setShowFallback(true);
+    };
+
+    const handleCanPlayThrough = () => {
+      if (!videoPlaying) {
+        attemptPlay();
+      }
+    };
+
+    video.addEventListener('canplay', handleCanPlay);
+    video.addEventListener('playing', handlePlaying);
+    video.addEventListener('error', handleError);
+    video.addEventListener('waiting', handleWaiting);
+    video.addEventListener('canplaythrough', handleCanPlayThrough);
+    
+    if (video.readyState >= 3) {
+      setVideoLoaded(true);
+      attemptPlay();
+    }
+
+    const timeout = setTimeout(() => {
+      if (!videoPlaying) {
+        attemptPlay();
+      }
+    }, isMobile ? 3000 : 5000);
+    
+    return () => {
+      clearTimeout(timeout);
+      video.removeEventListener('canplay', handleCanPlay);
+      video.removeEventListener('playing', handlePlaying);
+      video.removeEventListener('error', handleError);
+      video.removeEventListener('waiting', handleWaiting);
+      video.removeEventListener('canplaythrough', handleCanPlayThrough);
+    };
+  }, [isMobile, prefersReducedMotion, attemptPlay, videoPlaying]);
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
 
     const updateScrollVariable = throttle(() => {
       document.documentElement.style.setProperty('--scroll-y', `${window.scrollY}px`);
@@ -263,10 +294,18 @@ export function GlobalBackground() {
 
     window.addEventListener('scroll', updateScrollVariable, { passive: true });
     return () => window.removeEventListener('scroll', updateScrollVariable);
-  }, [prefersReducedMotion, isMobile]);
+  }, [prefersReducedMotion]);
 
-  const showVideo = !isMobile && !videoFailed && videoLoaded;
-  const showFallback = isMobile || videoFailed || !videoLoaded;
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && videoRef.current) {
+        attemptPlay();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [attemptPlay]);
 
   return (
     <div ref={containerRef} className="fixed inset-0 overflow-hidden z-0">
@@ -280,51 +319,50 @@ export function GlobalBackground() {
         />
       )}
       
-      {isMobile ? (
-        <MobileBackground />
-      ) : (
-        <>
-          {!videoFailed && (
-            <video
-              ref={videoRef}
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="auto"
-              className="absolute w-full h-full object-cover transition-opacity duration-1000"
-              style={{
-                minWidth: '100%',
-                minHeight: '100%',
-                opacity: showVideo ? 1 : 0
-              }}
-            >
-              <source 
-                src="https://cdn.pixabay.com/video/2021/08/06/84086-584871133_large.mp4" 
-                type="video/mp4" 
-              />
-            </video>
-          )}
-          
-          {!prefersReducedMotion && (
-            <div 
-              className="absolute inset-0 pointer-events-none z-[2]"
-              style={{
-                background: `radial-gradient(ellipse 120% 80% at center 10%, 
-                  rgba(255, 200, 0, 0.15) 0%,
-                  rgba(255, 180, 0, 0.08) 25%,
-                  rgba(255, 150, 0, 0.04) 45%,
-                  transparent 70%
-                )`,
-                mixBlendMode: 'screen'
-              }}
-            />
-          )}
-        </>
+      {isMobile && showFallback && <MobileGradientFallback />}
+
+      {!prefersReducedMotion && (
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3Crect fill='%230a0a0a'/%3E%3C/svg%3E"
+          className="absolute w-full h-full object-cover"
+          style={{
+            minWidth: '100%',
+            minHeight: '100%',
+            opacity: videoPlaying ? 1 : 0,
+            transition: 'opacity 0.8s ease-out',
+            willChange: 'opacity'
+          }}
+        >
+          <source 
+            src="https://cdn.pixabay.com/video/2021/08/06/84086-584871133_large.mp4" 
+            type="video/mp4" 
+          />
+        </video>
       )}
       
-      <GlowOrbs />
-      <BokehParticles />
+      {!isMobile && !prefersReducedMotion && (
+        <div 
+          className="absolute inset-0 pointer-events-none z-[2]"
+          style={{
+            background: `radial-gradient(ellipse 120% 80% at center 10%, 
+              rgba(255, 200, 0, 0.15) 0%,
+              rgba(255, 180, 0, 0.08) 25%,
+              rgba(255, 150, 0, 0.04) 45%,
+              transparent 70%
+            )`,
+            mixBlendMode: 'screen'
+          }}
+        />
+      )}
+      
+      <GlowOrbs videoPlaying={videoPlaying && isMobile} />
+      <BokehParticles videoPlaying={videoPlaying && isMobile} />
       
       <div 
         className="absolute inset-0 pointer-events-none z-[6]"
@@ -332,11 +370,11 @@ export function GlobalBackground() {
           background: isMobile 
             ? `linear-gradient(
                 180deg,
-                rgba(0, 3, 15, 0.6) 0%,
-                rgba(0, 5, 20, 0.3) 30%,
-                rgba(0, 0, 0, 0.2) 50%,
-                rgba(0, 5, 20, 0.4) 70%,
-                rgba(0, 5, 20, 0.85) 100%
+                rgba(0, 3, 15, 0.5) 0%,
+                rgba(0, 5, 20, 0.25) 30%,
+                rgba(0, 0, 0, 0.15) 50%,
+                rgba(0, 5, 20, 0.35) 70%,
+                rgba(0, 5, 20, 0.8) 100%
               )`
             : `linear-gradient(
                 180deg,

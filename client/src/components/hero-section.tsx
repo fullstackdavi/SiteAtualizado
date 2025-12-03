@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState, useCallback, memo, useMemo } from "react";
+import { useEffect, useRef, useState, useCallback, memo } from "react";
 import { gsap } from "gsap";
-import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { useReducedMotion, useIsMobile } from "@/hooks/use-reduced-motion";
 
 const stats = [
   { number: 500, suffix: "+", label: "Projetos Entregues" },
@@ -67,9 +67,10 @@ export function HeroSection() {
   const [scrollY, setScrollY] = useState(0);
   const [isAnimated, setIsAnimated] = useState(false);
   const prefersReducedMotion = useReducedMotion();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
-    if (prefersReducedMotion) {
+    if (prefersReducedMotion || isMobile) {
       setIsAnimated(true);
       return;
     }
@@ -95,10 +96,10 @@ export function HeroSection() {
       if (rafId) cancelAnimationFrame(rafId);
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [prefersReducedMotion]);
+  }, [prefersReducedMotion, isMobile]);
 
   useEffect(() => {
-    if (prefersReducedMotion) {
+    if (prefersReducedMotion || isMobile) {
       setIsAnimated(true);
       return;
     }
@@ -158,12 +159,12 @@ export function HeroSection() {
         "-=0.3"
       );
     }
-  }, [prefersReducedMotion]);
+  }, [prefersReducedMotion, isMobile]);
 
   const scrollToContact = useCallback(() => {
     const element = document.querySelector("#contato");
     if (element) {
-      const navHeight = 80;
+      const navHeight = 70;
       const elementPosition = element.getBoundingClientRect().top + window.scrollY;
       window.scrollTo({
         top: elementPosition - navHeight,
@@ -175,7 +176,7 @@ export function HeroSection() {
   const scrollToServices = useCallback(() => {
     const element = document.querySelector("#servicos");
     if (element) {
-      const navHeight = 80;
+      const navHeight = 70;
       const elementPosition = element.getBoundingClientRect().top + window.scrollY;
       window.scrollTo({
         top: elementPosition - navHeight,
@@ -184,61 +185,61 @@ export function HeroSection() {
     }
   }, [prefersReducedMotion]);
 
-  const parallaxOffset = prefersReducedMotion ? 0 : scrollY * 0.25;
-  const baseOpacity = prefersReducedMotion || isAnimated ? 1 : 0;
+  const parallaxOffset = (prefersReducedMotion || isMobile) ? 0 : scrollY * 0.25;
+  const baseOpacity = prefersReducedMotion || isMobile || isAnimated ? 1 : 0;
 
   return (
     <section
       ref={sectionRef}
       id="inicio"
-      className="relative min-h-screen flex items-center justify-center pt-20 pb-16 overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center pt-20 md:pt-24 pb-8 md:pb-16 overflow-hidden px-4"
       data-testid="section-hero"
     >
       <div 
-        className="container mx-auto px-4 lg:px-8 relative z-10 text-[52px]"
-        style={{ transform: prefersReducedMotion ? undefined : `translate3d(0, ${parallaxOffset * 0.15}px, 0)` }}
+        className="container mx-auto relative z-10"
+        style={{ transform: (prefersReducedMotion || isMobile) ? undefined : `translate3d(0, ${parallaxOffset * 0.15}px, 0)` }}
       >
         <div className="max-w-5xl mx-auto text-center">
           <div 
             ref={badgeRef}
-            className={`inline-flex items-center gap-2 glass-ultra shine-sweep specular-highlight px-5 py-2.5 mb-8 ${prefersReducedMotion ? '' : 'floating-motion-slow'}`}
+            className="inline-flex items-center gap-2 glass-ultra shine-sweep specular-highlight px-4 md:px-5 py-2 md:py-2.5 mb-6 md:mb-8 rounded-full"
             style={{ opacity: baseOpacity }}
           >
             <span 
-              className={`w-2.5 h-2.5 rounded-full ${prefersReducedMotion ? '' : 'animate-pulse'}`}
+              className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full"
               style={{ 
                 background: 'linear-gradient(135deg, #FFD700, #FFA500)', 
-                boxShadow: '0 0 15px rgba(255, 200, 0, 0.8), 0 0 30px rgba(255, 200, 0, 0.5), 0 0 45px rgba(255, 180, 0, 0.3)' 
+                boxShadow: '0 0 10px rgba(255, 200, 0, 0.8), 0 0 20px rgba(255, 200, 0, 0.5)' 
               }}
             />
-            <span className="text-sm text-white/90 font-medium tracking-wide">Agencia Digital Premium</span>
+            <span className="text-xs md:text-sm text-white/90 font-medium tracking-wide">Agência Digital Premium</span>
           </div>
 
           <h1 
             ref={titleRef}
-            className="font-bold text-white mb-6"
-            style={{ opacity: baseOpacity, fontSize: '55px', lineHeight: '1.1' }}
+            className="font-bold text-white mb-4 md:mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight"
+            style={{ opacity: baseOpacity }}
           >
             Transforme sua{" "}
             <span className="text-gradient-glow">Presença Digital</span>
-            <br />
+            <br className="hidden sm:block" />
+            <span className="sm:hidden"> </span>
             em Resultados Reais
           </h1>
 
           <p 
             ref={subtitleRef}
-            className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-10 leading-relaxed"
+            className="text-base md:text-lg lg:text-xl text-white/70 max-w-3xl mx-auto mb-8 md:mb-10 leading-relaxed px-2"
             style={{ opacity: baseOpacity }}
           >
             Desenvolvemos soluções digitais sob medida que impulsionam seu negócio. 
-            Sites profissionais, e-commerce, landing pages, branding e muito mais. 
-            Entrega rápida, resultados comprovados.
+            Sites profissionais, e-commerce, landing pages, branding e muito mais.
           </p>
 
-          <div ref={buttonsRef} className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+          <div ref={buttonsRef} className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 mb-10 md:mb-16 px-4">
             <button
               onClick={scrollToContact}
-              className="btn-primary btn-glow ripple-effect text-base md:text-lg w-full sm:w-auto gold-glow"
+              className="btn-primary btn-glow ripple-effect text-sm md:text-base lg:text-lg w-full sm:w-auto px-6 md:px-8 py-3 md:py-4 gold-glow rounded-xl"
               style={{ opacity: baseOpacity }}
               data-testid="button-hero-cta"
             >
@@ -247,7 +248,7 @@ export function HeroSection() {
             </button>
             <button
               onClick={scrollToServices}
-              className="btn-secondary glow-border rotating-glow text-base md:text-lg w-full sm:w-auto"
+              className="btn-secondary glow-border text-sm md:text-base lg:text-lg w-full sm:w-auto px-6 md:px-8 py-3 md:py-4 rounded-xl"
               style={{ opacity: baseOpacity }}
               data-testid="button-hero-services"
             >
@@ -256,19 +257,18 @@ export function HeroSection() {
             </button>
           </div>
 
-          <div ref={statsRef} className="spotlight-cards grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <div ref={statsRef} className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6 px-2">
             {stats.map((stat, index) => (
               <div
                 key={index}
-                className={`spotlight-card stat-card-enhanced glass-card-enhanced shine-sweep specular-highlight p-6 text-center aurora-glow will-change-transform ${prefersReducedMotion ? '' : `floating-motion stagger-${index + 1}`}`}
+                className="stat-card-enhanced glass-card-enhanced shine-sweep specular-highlight p-4 md:p-6 text-center aurora-glow will-change-transform rounded-2xl"
                 style={{ 
-                  animationDelay: prefersReducedMotion ? undefined : `${index * 0.4}s`,
                   opacity: baseOpacity,
                   contain: 'layout style paint'
                 }}
                 data-testid={`stat-card-${index}`}
               >
-                <div className="stat-number text-gradient-glow">
+                <div className="stat-number text-gradient-glow text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-1 md:mb-2">
                   <AnimatedCounter 
                     target={stat.number} 
                     suffix={stat.suffix} 
@@ -276,14 +276,14 @@ export function HeroSection() {
                     delay={index * 0.15}
                   />
                 </div>
-                <div className="text-white/60 text-sm md:text-base">{stat.label}</div>
+                <div className="text-white/60 text-xs sm:text-sm md:text-base leading-tight">{stat.label}</div>
               </div>
             ))}
           </div>
         </div>
 
       </div>
-      {!prefersReducedMotion && (
+      {!prefersReducedMotion && !isMobile && (
         <div 
           className="absolute inset-0 pointer-events-none hidden md:block"
           style={{

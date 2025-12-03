@@ -1,0 +1,97 @@
+Quero que você adicione efeitos de glow curvado (light flare corner glow) nas bordas dos meus cards, parecido com o exemplo que irei descrever. Não copie imagens do site original. Em vez disso, gere tudo apenas com CSS (gradientes, blur, radial-gradient, conic-gradient).
+
+Quero que cada card tenha:
+
+canto inferior direito com um 'flare' curvado azul/neon
+
+canto superior esquerdo com um glow suave
+
+efeito de energia usando radial-gradient + filter: blur(25px)
+
+animação leve (pulse) para parecer energia viva
+
+100% compatível com glassmorphism
+
+Gere o código HTML + CSS abaixo já funcionando.
+
+ESTRUTURA DO CARD:
+
+container com glassmorphism
+
+dois pseudo-elementos: ::before e ::after
+
+::before → flare inferior direito
+
+::after → flare superior esquerdo
+
+Aqui está o CSS e HTML que você deve entregar:
+
+HTML:
+
+<div class="glass-card glow-corners">  
+    <h2>Título do Card</h2>  
+    <p>Conteúdo do card aqui...</p>  
+</div>  
+
+
+CSS COMPLETO:
+
+.glass-card {  
+    position: relative;  
+    background: rgba(255,255,255,0.06);  
+    backdrop-filter: blur(18px);  
+    border-radius: 20px;  
+    border: 1px solid rgba(0, 217, 255, 0.25);  
+    padding: 30px;  
+    overflow: hidden;  
+}  
+
+.glass-card.glow-corners::before,  
+.glass-card.glow-corners::after {  
+    content: "";  
+    position: absolute;  
+    width: 180px;  
+    height: 180px;  
+    pointer-events: none;  
+    opacity: 0.8;  
+    filter: blur(22px);  
+    mix-blend-mode: screen;  
+    animation: pulseGlow 4s infinite ease-in-out;  
+}  
+
+/* 🔥 Glow inferior direito (parecido com a imagem) */  
+.glass-card.glow-corners::before {  
+    bottom: -60px;  
+    right: -60px;  
+    background: radial-gradient(  
+        circle at top left,  
+        rgba(0, 132, 255, 0.9),  
+        rgba(0, 69, 255, 0.7) 40%,  
+        rgba(0, 20, 60, 0) 70%  
+    );  
+}  
+
+/* 🔥 Glow superior esquerdo */  
+.glass-card.glow-corners::after {  
+    top: -50px;  
+    left: -50px;  
+    background: radial-gradient(  
+        circle at bottom right,  
+        rgba(0, 190, 255, 0.8),  
+        rgba(0, 90, 255, 0.4) 50%,  
+        rgba(0, 30, 80, 0) 80%  
+    );  
+}  
+
+/* ✨ Animação suave de energia */  
+@keyframes pulseGlow {  
+    0% { transform: scale(1); opacity: 0.75; }  
+    50% { transform: scale(1.15); opacity: 1; }  
+    100% { transform: scale(1); opacity: 0.75; }  
+}  
+
+
+O resultado final deve replicar o estilo de glow curvado mostrado na referência, porém com design único gerado via CSS.
+Não copie texto, imagens ou elementos do site de referência—apenas o estilo visual do flare.
+
+Entregue exatamente o código acima.

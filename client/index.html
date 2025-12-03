@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
+    <meta name="description" content="Digital Soluctions - Agência digital especializada em criação de sites, e-commerce, landing pages, identidade visual, tráfego pago e automação. Transformamos sua presença digital em resultados." />
+    <meta name="keywords" content="agência digital, criação de sites, e-commerce, landing pages, identidade visual, tráfego pago, automação, marketing digital, branding" />
+    <meta name="author" content="Digital Soluctions" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://digitalsolutions.com.br/" />
+    <meta property="og:title" content="Digital Soluctions - Transforme sua Presença Digital" />
+    <meta property="og:description" content="Agência digital especializada em criação de sites, e-commerce, landing pages, identidade visual, tráfego pago e automação." />
+    <meta property="og:image" content="/og-image.png" />
+    
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://digitalsolutions.com.br/" />
+    <meta name="twitter:title" content="Digital Soluctions - Transforme sua Presença Digital" />
+    <meta name="twitter:description" content="Agência digital especializada em criação de sites, e-commerce, landing pages, identidade visual, tráfego pago e automação." />
+    <meta name="twitter:image" content="/og-image.png" />
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#000000" />
+    
+    <!-- DNS Prefetch for external resources -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="https://cdn.pixabay.com" />
+    <link rel="dns-prefetch" href="https://wa.me" />
+    
+    <!-- Preconnect for critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.pixabay.com" crossorigin />
+    
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    
+    <!-- Optimized Font Loading - only essential weights -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- Font Awesome with async loading -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" /></noscript>
+    
+    <!-- Preload critical video -->
+    <link rel="preload" href="https://cdn.pixabay.com/video/2021/08/06/84086-584871133_large.mp4" as="video" type="video/mp4" crossorigin />
+    
+    <!-- Preload critical font weights -->
+    <link rel="preload" href="https://fonts.gstatic.com/s/poppins/v21/pxiByp8kv8JHgFVrLCz7Z1xlFd2JQEk.woff2" as="font" type="font/woff2" crossorigin />
+    
+    <title>Digital Soluctions - Transforme sua Presença Digital em Resultados</title>
+    
+    <!-- Critical CSS for First Paint -->
+    <style>
+      body { background: #000; margin: 0; }
+      #root { min-height: 100vh; }
+      .loading-skeleton { 
+        background: linear-gradient(90deg, #111 25%, #1a1a1a 50%, #111 75%);
+        background-size: 200% 100%;
+        animation: skeleton-loading 1.5s infinite;
+      }
+      @keyframes skeleton-loading {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+    </style>
+  </head>
+  <body class="dark">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

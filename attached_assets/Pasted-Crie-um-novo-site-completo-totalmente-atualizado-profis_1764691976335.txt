@@ -1,0 +1,254 @@
+Crie um novo site completo, totalmente atualizado, profissional e responsivo, para a minha agência Digital Solutions. Este site deve manter a estrutura atual que eu já possuo, porém com melhorias e com novos serviços adicionados.
+
+Quero que o resultado final seja entregue com:
+
+index.html (Landing Page principal)
+
+produto.html (modelo de página de serviços/produtos)
+
+style.css (design 100% refinado)
+
+script.js (interações e animações)
+
+Totalmente compatível com GitHub Pages
+
+100% HTML + CSS + JavaScript puros
+
+Layout moderno, elegante, tecnológico, com glassmorphism
+
+🔷 MANUTENHA E EVOLUA ESTA ESTRUTURA:
+1. Estrutura base já existente
+
+O novo site deve manter:
+
+Navbar fixa com scroll suave
+
+Hero section com título forte, subtítulo, CTA e estatísticas
+
+Sobre a empresa
+
+Seção com cards de serviços
+
+Catálogo de produtos/soluções
+
+Contato com botões WhatsApp e E-mail
+
+Rodapé com redes sociais
+
+Página produto.html com:
+
+Galeria com thumbnails
+
+Descrição detalhada
+
+Benefícios em grid
+
+FAQ com accordion
+
+CTA final
+
+2. Design System atual que deve ser mantido
+
+Cor primária: Neon Blue #00D9FF
+
+Fundo: #000, #111 e #1a1a1a
+
+Glassmorphism:
+
+Cards com transparência 0.25–0.3
+
+backdrop-filter: blur
+
+Bordas neon sutis
+
+Fonte: Poppins
+
+Ícones: Font Awesome
+
+Efeitos: hover neon + animações suaves
+
+CSS responsivo: mobile-first
+
+Variáveis CSS:
+
+Tipografia
+
+Espaçamentos
+
+Border radius
+
+Breakpoints customizados:
+
+320px, 321–480px, 481–640px, 641–768px, 769–1024px, 1024–1400px, 1400px+
+
+3. Arquitetura atual a ser preservada
+
+Totalmente estático
+
+Compatível com GitHub Pages
+
+Caminhos relativos
+
+script.js com:
+
+animações
+
+FAQ accordion
+
+troca de imagens da galeria
+
+navbar auto-hide
+
+menu hambúrguer mobile
+
+🔷 NOVAS FUNCIONALIDADES E SERVIÇOS QUE DEVEM SER ADICIONADOS
+
+Adicione estes novos serviços na seção “Serviços” e também permita expandir para páginas próprias em produto.html:
+
+🆕 Novos serviços para incluir:
+
+Criação completa de Sites Profissionais
+
+Criação de E-commerce
+
+Criação de Landing Pages de Alta Conversão
+
+Identidade Visual + Branding Completo
+
+Criação de Criativos com IA (Ads, Reels, Thumb, Artes)
+
+Gestão de Tráfego Pago
+
+Automação de Processos e Chatbots
+
+Criação de Páginas de Vendas
+
+Sistemas personalizados para negócios locais
+
+Consultoria digital para posicionamento e estratégia
+
+Setup e otimização de presença online completa
+
+🆕 Adicionar nova seção no site: “Soluções Completas”
+
+Inclua uma seção explicando que entregamos:
+
+Estratégia
+
+Design
+
+Tecnologia
+
+Setup
+
+Suporte
+
+Acompanhamento
+
+Otimização contínua
+
+🆕 Criar seção “Por que escolher a Digital Solutions?”
+
+Com bullet points enfatizando:
+
+Entrega rápida
+
+Atendimento direto
+
+Alta performance
+
+Personalização total
+
+Projetos sob medida
+
+Padrão premium
+
+Foco em resultado
+
+🆕 Criar seção “Processo de Trabalho”
+
+Passo a passo:
+
+Análise e diagnóstico
+
+Estruturação da solução ideal
+
+Design profissional
+
+Desenvolvimento
+
+Testes e otimização
+
+Entrega
+
+Suporte
+
+🔷 MELHORIAS SOLICITADAS PARA O NOVO SITE
+
+Aplique e otimize:
+
+SEO avançado
+
+Meta tags Open Graph e Twitter Cards
+
+Melhorar microanimações
+
+Suavizar transições
+
+Atualizar estatísticas do Hero
+
+Criar um CTA principal mais persuasivo
+
+Melhorar o carregamento dos cards
+
+Perfil mais clean e premium
+
+🔷 CONTEÚDO QUE DEVE SER REESCRITO NO NOVO TOM:
+
+Tom desejado:
+🔹 moderno
+🔹 direto
+🔹 profissional
+🔹 convincente
+🔹 com autoridade
+🔹 linguagem clara e comercial
+
+Todos os textos do site devem seguir esse padrão.
+
+🔷 OBJETIVO FINAL DO PROJETO
+
+Entregar um site profissional, elegante, rápido e altamente conversivo, com:
+
+Identidade visual premium
+
+Estrutura sólida
+
+Conteúdo atualizado
+
+Novos serviços aplicados
+
+Responsividade impecável
+
+Navegação fluida
+
+Design moderno com glassmorphism
+
+Páginas organizadas e escaláveis
+
+Pronto para rodar no GitHub Pages
+
+🔷 ENTREGA FINAL ESPERADA
+
+Quero que você gere:
+
+index.html atualizado e completo
+
+produto.html modelo replicável para novos serviços
+
+style.css otimizado e organizado
+
+script.js funcional com todas interações
+
+Texto revisado e reescrito
+
+Estrutura fiel + melhorias profissionais

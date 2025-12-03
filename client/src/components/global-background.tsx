@@ -2,12 +2,12 @@ import { useEffect, useRef, useMemo, memo, useState, useCallback, lazy, Suspense
 import { gsap } from "gsap";
 import { useReducedMotion, useIsMobile } from "@/hooks/use-reduced-motion";
 
-const BOKEH_COUNT_DESKTOP = 10;
-const BOKEH_COUNT_MOBILE = 3;
-const PARTICLE_COUNT_DESKTOP = 15;
-const PARTICLE_COUNT_MOBILE = 4;
-const LENS_FLARE_COUNT_DESKTOP = 4;
-const LENS_FLARE_COUNT_MOBILE = 2;
+const BOKEH_COUNT_DESKTOP = 6;
+const BOKEH_COUNT_MOBILE = 2;
+const PARTICLE_COUNT_DESKTOP = 8;
+const PARTICLE_COUNT_MOBILE = 3;
+const LENS_FLARE_COUNT_DESKTOP = 3;
+const LENS_FLARE_COUNT_MOBILE = 1;
 
 const throttle = <T extends (...args: unknown[]) => void>(fn: T, delay: number): T => {
   let lastCall = 0;
@@ -207,7 +207,7 @@ const LensFlares = memo(function LensFlares() {
         el.style.opacity = String(opacity);
         el.style.transform = `translateY(${scrollY * (0.05 + index * 0.02)}px)`;
       });
-    }, 32);
+    }, 50);
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -359,7 +359,7 @@ const StarsParallax = memo(function StarsParallax() {
       if (layer1) layer1.style.transform = `translate3d(0, ${scrollY * 0.3}px, 0)`;
       if (layer2) layer2.style.transform = `translate3d(0, ${scrollY * 0.5}px, 0)`;
       if (layer3) layer3.style.transform = `translate3d(0, ${scrollY * 0.7}px, 0)`;
-    }, 16);
+    }, 32);
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -466,7 +466,7 @@ const BloomLayer = memo(function BloomLayer() {
         el.style.opacity = String(0.3 + intensity * 0.7);
         el.style.transform = `scale3d(${0.8 + intensity * 0.4}, ${0.8 + intensity * 0.4}, 1)`;
       });
-    }, 32);
+    }, 50);
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();

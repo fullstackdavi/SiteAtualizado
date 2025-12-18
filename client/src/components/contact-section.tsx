@@ -257,7 +257,7 @@ export function ContactSection() {
             style={{ opacity: baseOpacity }}
           >
             <div ref={contactButtonsRef} className="spotlight-cards grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <div className="relative">
+              <div className="flex flex-col gap-3">
                 <button
                   onClick={handleWhatsAppClick}
                   className="contact-button spotlight-card group w-full flex items-center justify-center gap-4 p-6 rounded-xl glass-ultra border border-green-500/30 hover:border-green-500/50 transition-all inner-light"
@@ -273,17 +273,17 @@ export function ContactSection() {
                   <i className="fas fa-arrow-right text-green-500 ml-auto opacity-0 group-hover:opacity-100 transition-opacity"></i>
                 </button>
 
-                {/* Cascata Menu */}
+                {/* Cascata Menu - Below Card */}
                 {whatsappOpen && (
                   <div
                     ref={whatsappMenuRef}
-                    className="absolute top-0 left-0 right-0 mt-2 flex flex-col gap-2 z-50"
+                    className="flex flex-col gap-2"
                   >
                     {whatsappContacts.map((contact, index) => (
                       <button
                         key={index}
                         onClick={() => handleWhatsAppContact(contact.phone, contact.message)}
-                        className="whatsapp-menu-item w-full flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-lg transition-all duration-200 shadow-lg"
+                        className="whatsapp-menu-item flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-lg transition-all duration-200 shadow-lg w-full"
                         data-testid={`whatsapp-contact-${index}`}
                       >
                         <i className="fab fa-whatsapp text-lg"></i>

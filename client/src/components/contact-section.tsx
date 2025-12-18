@@ -2,6 +2,25 @@ import { useEffect, useRef, useState, memo } from "react";
 import { gsap } from "gsap";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
+interface WhatsAppContact {
+  name: string;
+  phone: string;
+  message: string;
+}
+
+const whatsappContacts: WhatsAppContact[] = [
+  {
+    name: "Davi",
+    phone: "5531999364057",
+    message: "Olá Davi, quero impulsionar meu negócio... 🚀"
+  },
+  {
+    name: "João Layon",
+    phone: "5531995281707",
+    message: "Olá João, quero impulsionar meu negócio... 🚀"
+  }
+];
+
 export function ContactSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -9,7 +28,9 @@ export function ContactSection() {
   const contactButtonsRef = useRef<HTMLDivElement>(null);
   const infoCardsRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
+  const whatsappMenuRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [whatsappOpen, setWhatsappOpen] = useState(false);
   const isAnimating = useRef(false);
   const prefersReducedMotion = useReducedMotion();
 
@@ -174,6 +195,33 @@ export function ContactSection() {
     };
   }, [prefersReducedMotion]);
 
+  const handleWhatsAppClick = () => {
+    setWhatsappOpen(!whatsappOpen);
+    
+    if (!whatsappOpen && whatsappMenuRef.current && !prefersReducedMotion) {
+      const items = whatsappMenuRef.current.querySelectorAll('.whatsapp-menu-item');
+      gsap.killTweensOf(items);
+      gsap.fromTo(items,
+        { opacity: 0, y: 10, scale: 0.9 },
+        { 
+          opacity: 1, 
+          y: 0, 
+          scale: 1,
+          duration: 0.3,
+          stagger: { each: 0.1 },
+          ease: "back.out"
+        }
+      );
+    }
+  };
+
+  const handleWhatsAppContact = (phone: string, message: string) => {
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
+    window.open(whatsappUrl, "_blank");
+    setWhatsappOpen(false);
+  };
+
   const baseOpacity = prefersReducedMotion ? 1 : undefined;
 
   return (
@@ -209,22 +257,42 @@ export function ContactSection() {
             style={{ opacity: baseOpacity }}
           >
             <div ref={contactButtonsRef} className="spotlight-cards grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <a
-                href="https://wa.me/5531993640574?text=Olá, quero impulsionar meu negócio... 🚀"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="contact-button spotlight-card group flex items-center justify-center gap-4 p-6 rounded-xl glass-ultra border border-green-500/30 hover:border-green-500/50 transition-all inner-light"
-                data-testid="button-whatsapp-contact"
-              >
-                <div className="w-14 h-14 rounded-full bg-green-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <i className="fab fa-whatsapp text-green-500 text-2xl"></i>
-                </div>
-                <div className="text-left">
-                  <div className="text-white font-semibold text-lg">WhatsApp</div>
-                  <div className="text-white/60 text-sm">Resposta em minutos</div>
-                </div>
-                <i className="fas fa-arrow-right text-green-500 ml-auto opacity-0 group-hover:opacity-100 transition-opacity"></i>
-              </a>
+              <div className="relative">
+                <button
+                  onClick={handleWhatsAppClick}
+                  className="contact-button spotlight-card group w-full flex items-center justify-center gap-4 p-6 rounded-xl glass-ultra border border-green-500/30 hover:border-green-500/50 transition-all inner-light"
+                  data-testid="button-whatsapp-contact"
+                >
+                  <div className="w-14 h-14 rounded-full bg-green-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <i className="fab fa-whatsapp text-green-500 text-2xl"></i>
+                  </div>
+                  <div className="text-left">
+                    <div className="text-white font-semibold text-lg">WhatsApp</div>
+                    <div className="text-white/60 text-sm">Resposta em minutos</div>
+                  </div>
+                  <i className="fas fa-arrow-right text-green-500 ml-auto opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                </button>
+
+                {/* Cascata Menu */}
+                {whatsappOpen && (
+                  <div
+                    ref={whatsappMenuRef}
+                    className="absolute top-0 left-0 right-0 mt-2 flex flex-col gap-2 z-50"
+                  >
+                    {whatsappContacts.map((contact, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleWhatsAppContact(contact.phone, contact.message)}
+                        className="whatsapp-menu-item w-full flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-lg transition-all duration-200 shadow-lg"
+                        data-testid={`whatsapp-contact-${index}`}
+                      >
+                        <i className="fab fa-whatsapp text-lg"></i>
+                        <span className="font-medium">{contact.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
 
               <a
                 href="mailto:contato@digitalsolutions.com.br"

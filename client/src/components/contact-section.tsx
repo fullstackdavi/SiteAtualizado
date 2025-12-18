@@ -199,19 +199,22 @@ export function ContactSection() {
     setWhatsappOpen(!whatsappOpen);
     
     if (!whatsappOpen && whatsappMenuRef.current && !prefersReducedMotion) {
-      const items = whatsappMenuRef.current.querySelectorAll('.whatsapp-menu-item');
-      gsap.killTweensOf(items);
-      gsap.fromTo(items,
-        { opacity: 0, y: 10, scale: 0.9 },
-        { 
-          opacity: 1, 
-          y: 0, 
-          scale: 1,
-          duration: 0.3,
-          stagger: { each: 0.1 },
-          ease: "back.out"
+      setTimeout(() => {
+        const items = whatsappMenuRef.current?.querySelectorAll('.whatsapp-menu-item');
+        if (items) {
+          gsap.killTweensOf(items);
+          gsap.fromTo(items,
+            { opacity: 0, y: -20 },
+            { 
+              opacity: 1, 
+              y: 0,
+              duration: 0.5,
+              stagger: { each: 0.15 },
+              ease: "back.out(1.5)"
+            }
+          );
         }
-      );
+      }, 0);
     }
   };
 

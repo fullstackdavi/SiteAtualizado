@@ -15,10 +15,9 @@ const PageLoader = memo(function PageLoader() {
     <div className="min-h-screen flex items-center justify-center" data-testid="page-loader">
       <div className="flex flex-col items-center gap-4">
         <div 
-          className="w-12 h-12 rounded-xl animate-pulse"
+          className="w-12 h-12 rounded-xl"
           style={{
             background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
-            boxShadow: '0 0 30px rgba(255, 200, 0, 0.5)'
           }}
         />
         <div className="text-white/60 text-sm">Carregando...</div>

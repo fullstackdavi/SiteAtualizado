@@ -354,90 +354,17 @@
     background-size: 50px 50px;
   }
 
-  .fade-in {
-    animation: fadeIn 0.6s ease forwards;
-    opacity: 0;
-  }
-
-  .fade-in-up {
-    animation: fadeInUp 0.6s ease forwards;
-    opacity: 0;
-  }
-
-  .slide-in-left {
-    animation: slideInLeft 0.6s ease forwards;
-    opacity: 0;
-  }
-
-  .slide-in-right {
-    animation: slideInRight 0.6s ease forwards;
-    opacity: 0;
-  }
 }
 
-/* ======== CORE ANIMATIONS ======== */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateX(var(--slide-dir, -20px)); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 20px rgba(255, 200, 0, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(255, 200, 0, 0.5); }
-}
-
-@keyframes cornerGlowPulse {
-  0% { transform: scale(1); opacity: 0.6; }
-  50% { transform: scale(1.12); opacity: 0.9; }
-  100% { transform: scale(1); opacity: 0.6; }
-}
-
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { 
-    transform: scale(1);
-    box-shadow: 0 0 10px rgba(0, 200, 255, 0.3);
-  }
-  50% { 
-    transform: scale(1.15);
-    box-shadow: 0 0 25px rgba(0, 200, 255, 0.6);
-  }
-}
-
-@keyframes icon-float {
-  0%, 100% { 
-    transform: translateY(0) rotate(0deg);
-  }
-  25% {
-    transform: translateY(-3px) rotate(3deg);
-  }
-  50% { 
-    transform: translateY(-5px) rotate(0deg);
-  }
-  75% {
-    transform: translateY(-3px) rotate(-3deg);
-  }
-}
-
-.animate-pulse-glow { animation: pulseGlow 2.5s ease-in-out infinite; }
-.animate-float { animation: float 4s ease-in-out infinite; }
-.slide-in-left { --slide-dir: -20px; animation: slideIn 0.5s ease forwards; }
-.slide-in-right { --slide-dir: 20px; animation: slideIn 0.5s ease forwards; }
+/* ======== STATIC STYLES - NO ANIMATIONS ========= */
+.fade-in { opacity: 1; }
+.fade-in-up { opacity: 1; }
+.slide-in-left { opacity: 1; }
+.slide-in-right { opacity: 1; }
+.animate-pulse-glow { box-shadow: 0 0 20px rgba(255, 200, 0, 0.3); }
+.animate-float { transform: none; }
+.slide-in-left { transform: none; }
+.slide-in-right { transform: none; }
 
 /* ======== HERO BACKGROUND SYSTEM - ESCALONADOR STYLE ======== */
 .hero-background-wrapper {
@@ -472,12 +399,7 @@
     rgba(0, 0, 0, 0) 70%
   );
   mix-blend-mode: screen;
-  animation: lightPulse 4s ease-in-out infinite;
-}
-
-@keyframes lightPulse {
-  0%, 100% { opacity: 0.8; }
-  50% { opacity: 1; }
+  opacity: 0.9;
 }
 
 /* ======== MULTI-LAYER STARS SYSTEM ======== */
@@ -498,36 +420,8 @@
     radial-gradient(2.5px 2.5px at 80% 10%, rgba(255,255,255,0.8), transparent),
     radial-gradient(1.5px 1.5px at 45% 50%, rgba(255,255,255,0.6), transparent);
   background-size: 1200px 1200px;
-  animation: starsMove 80s linear infinite;
-  opacity: 0.5;
-  contain: strict;
-  will-change: transform;
-}
-
-.hero-background-stars::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: 
-    radial-gradient(1px 1px at 15% 20%, rgba(255,255,255,0.5), transparent),
-    radial-gradient(1.5px 1.5px at 45% 40%, rgba(255,255,255,0.4), transparent),
-    radial-gradient(1px 1px at 75% 60%, rgba(255,255,255,0.6), transparent),
-    radial-gradient(1.5px 1.5px at 25% 80%, rgba(255,255,255,0.5), transparent),
-    radial-gradient(1px 1px at 60% 90%, rgba(255,255,255,0.4), transparent),
-    radial-gradient(2px 2px at 90% 30%, rgba(255,255,255,0.5), transparent);
-  background-size: 800px 800px;
-  animation: starsMoveSlow 120s linear infinite reverse;
   opacity: 0.3;
-}
-
-@keyframes starsMove {
-  0% { transform: translateY(0) translateX(0); }
-  100% { transform: translateY(-400px) translateX(-100px); }
-}
-
-@keyframes starsMoveSlow {
-  0% { transform: translateY(0) translateX(0); }
-  100% { transform: translateY(-200px) translateX(50px); }
+  contain: strict;
 }
 
 /* ======== FLOATING GOLDEN PARTICLES ======== */
@@ -546,38 +440,8 @@
     radial-gradient(1px 1px at 50% 50%, rgba(255, 200, 0, 0.6), transparent),
     radial-gradient(1.5px 1.5px at 20% 60%, rgba(255, 180, 0, 0.5), transparent);
   background-size: 1000px 1000px;
-  opacity: 0.5;
-  animation: particlesFloat 50s linear infinite;
+  opacity: 0.2;
   contain: strict;
-  will-change: transform;
-}
-
-.hero-background-particles::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: 
-    radial-gradient(3px 3px at 25% 35%, rgba(255, 200, 0, 0.4), transparent),
-    radial-gradient(4px 4px at 75% 65%, rgba(255, 180, 0, 0.3), transparent),
-    radial-gradient(3px 3px at 40% 15%, rgba(255, 220, 0, 0.35), transparent),
-    radial-gradient(5px 5px at 60% 85%, rgba(255, 200, 0, 0.25), transparent);
-  background-size: 600px 600px;
-  animation: particlesFloatSlow 70s linear infinite reverse;
-  opacity: 0.4;
-  filter: blur(1px);
-}
-
-@keyframes particlesFloat {
-  0% { transform: translate3d(0, 0, 0) rotate(0deg); }
-  25% { transform: translate3d(-50px, -100px, 0) rotate(2deg); }
-  50% { transform: translate3d(-100px, -200px, 0) rotate(0deg); }
-  75% { transform: translate3d(-50px, -300px, 0) rotate(-2deg); }
-  100% { transform: translate3d(0, -400px, 0) rotate(0deg); }
-}
-
-@keyframes particlesFloatSlow {
-  0% { transform: translate3d(0, 0, 0); }
-  100% { transform: translate3d(100px, -300px, 0); }
 }
 
 /* ======== MATRIX DATA PARTICLES OVERLAY ======== */
@@ -588,13 +452,7 @@
     linear-gradient(0deg, transparent 24%, rgba(255, 200, 0, 0.02) 25%, rgba(255, 200, 0, 0.02) 26%, transparent 27%, transparent 74%, rgba(255, 200, 0, 0.02) 75%, rgba(255, 200, 0, 0.02) 76%, transparent 77%),
     linear-gradient(90deg, transparent 24%, rgba(255, 200, 0, 0.02) 25%, rgba(255, 200, 0, 0.02) 26%, transparent 27%, transparent 74%, rgba(255, 200, 0, 0.02) 75%, rgba(255, 200, 0, 0.02) 76%, transparent 77%);
   background-size: 50px 50px;
-  animation: dataGridMove 25s linear infinite;
-  opacity: 0.3;
-}
-
-@keyframes dataGridMove {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(50px, -50px); }
+  opacity: 0.1;
 }
 
 .hero-gradient-overlay {
@@ -643,26 +501,6 @@
   overflow: hidden;
 }
 
-.glass-border-animated::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  background: linear-gradient(
-    45deg,
-    transparent 30%,
-    rgba(255, 200, 0, 0.3) 50%,
-    transparent 70%
-  );
-  border-radius: inherit;
-  z-index: -1;
-  animation: borderGlow 3s linear infinite;
-}
-
-@keyframes borderGlow {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
 /* ======== TEXTO ILUMINADO DOURADO ======== */
 .glow-text-gold {
   color: #fff;
@@ -673,31 +511,11 @@
     0 0 60px rgba(255, 200, 0, 0.1);
 }
 
-/* ======== ADVANCED ANIMATIONS ======== */
-@keyframes zoomIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes bounceIn {
-  0% { opacity: 0; transform: scale(0.3); }
-  50% { transform: scale(1.05); }
-  70% { transform: scale(0.95); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-/* Animation utility classes */
-.animate-zoom-in { animation: zoomIn 0.5s ease forwards; }
-.animate-bounce-in { animation: bounceIn 0.6s ease forwards; }
+/* ======== STATIC STYLES ======== */
+.animate-zoom-in { opacity: 1; }
+.animate-bounce-in { opacity: 1; }
 .animate-shimmer {
   background: linear-gradient(90deg, transparent 0%, rgba(255, 200, 0, 0.08) 50%, transparent 100%);
-  background-size: 200% 100%;
-  animation: shimmer 4s linear infinite;
 }
 
 /* ======== HOVER EFFECTS ======== */
@@ -982,13 +800,6 @@
     rgba(255, 180, 0, 0.2) 75%,
     rgba(255, 200, 0, 0.1) 100%
   );
-  background-size: 400% 400%;
-  animation: goldShineMove 8s ease-in-out infinite;
-}
-
-@keyframes goldShineMove {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
 }
 
 .gold-glow {

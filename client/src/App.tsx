@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { GlobalBackground } from "@/components/global-background";
+import { WhatsAppWidget } from "@/components/whatsapp-widget";
 import { lazy, Suspense, memo } from "react";
 
 const Home = lazy(() => import("@/pages/home"));
@@ -47,6 +48,7 @@ function App() {
       <TooltipProvider>
         <MemoizedGlobalBackground />
         <MemoizedToaster />
+        <WhatsAppWidget />
         <Router />
       </TooltipProvider>
     </QueryClientProvider>
